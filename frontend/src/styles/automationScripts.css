@@ -1,0 +1,594 @@
+/* =========================================================
+   AUTOMATION SCRIPTS PAGE
+   ========================================================= */
+
+.automation-page {
+  padding: 28px 34px 40px;
+  background: #f6f8fc;
+  min-height: calc(100vh - 70px);
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.automation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.automation-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.automation-header p {
+  margin: 8px 0 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.automation-stats {
+  display: flex;
+  gap: 14px;
+}
+
+.automation-stat-card {
+  min-width: 140px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.05);
+}
+
+.automation-stat-card span {
+  display: block;
+  color: #667085;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.automation-stat-card strong {
+  font-size: 24px;
+  color: #1d2939;
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.automation-toolbar {
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 26px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
+}
+
+.automation-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  padding: 0 14px;
+}
+
+.automation-search input {
+  width: 100%;
+  height: 46px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #344054;
+  background: transparent;
+}
+
+.automation-search input::placeholder {
+  color: #98a2b3;
+}
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.automation-content {
+  width: 100%;
+}
+
+.automation-section-title {
+  margin-bottom: 18px;
+}
+
+.automation-section-title h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 650;
+  color: #172033;
+}
+
+.automation-section-title p {
+  margin: 6px 0 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+/* =========================================================
+   PROJECT FOLDERS
+   ========================================================= */
+
+.automation-project-folders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.automation-folder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(16, 24, 40, 0.06);
+  transition: all 0.2s ease;
+}
+
+.automation-folder-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.10);
+  border-color: #c7d7fe;
+}
+
+.automation-folder-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4ff;
+  border-radius: 14px;
+  font-size: 30px;
+}
+
+.automation-folder-info {
+  width: 100%;
+}
+
+.automation-folder-info h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 650;
+  color: #172033;
+}
+
+.automation-folder-info p {
+  margin: 0 0 6px;
+  color: #475467;
+  font-size: 14px;
+}
+
+.automation-folder-info small {
+  color: #667085;
+  font-size: 13px;
+}
+
+.automation-folder-open-btn {
+  width: 100%;
+  border: none;
+  border-radius: 9px;
+  padding: 11px 16px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.automation-folder-open-btn:hover {
+  background: #1d4ed8;
+}
+
+/* =========================================================
+   INSIDE PROJECT FOLDER
+   ========================================================= */
+
+.automation-folder-view {
+  width: 100%;
+}
+
+.automation-folder-view-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.automation-folder-view-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #172033;
+}
+
+.automation-folder-view-header p {
+  margin: 5px 0 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+.automation-back-btn {
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.automation-back-btn:hover {
+  background: #f9fafb;
+}
+
+/* =========================================================
+   TEST CASE LIST
+   ========================================================= */
+
+.automation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.automation-card {
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(16, 24, 40, 0.05);
+}
+
+.automation-card-top {
+  display: flex;
+  gap: 16px;
+}
+
+.automation-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  color: #4f46e5;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.automation-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.automation-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.automation-test-id {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  background: #eef2ff;
+  color: #4338ca;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.automation-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  background: #ecfdf3;
+  color: #027a48;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.automation-card-info h3 {
+  margin: 0 0 12px;
+  color: #172033;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   META
+   ========================================================= */
+
+.automation-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #667085;
+  font-size: 13px;
+}
+
+.automation-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.automation-card-actions {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #eaecf0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.automation-view-btn,
+.automation-copy-btn,
+.automation-download-btn,
+.automation-generate-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.automation-view-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.automation-view-btn:hover {
+  background: #1d4ed8;
+}
+
+.automation-copy-btn {
+  background: #f2f4f7;
+  color: #344054;
+}
+
+.automation-copy-btn:hover {
+  background: #e4e7ec;
+}
+
+.automation-download-btn {
+  background: #eef4ff;
+  color: #175cd3;
+}
+
+.automation-download-btn:hover {
+  background: #dbe8ff;
+}
+
+.automation-generate-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.automation-generate-btn:hover {
+  background: #1d4ed8;
+}
+
+.automation-not-generated {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: #667085;
+  font-size: 13px;
+}
+
+/* =========================================================
+   EMPTY / LOADING
+   ========================================================= */
+
+.automation-empty {
+  padding: 60px 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 14px;
+}
+
+.automation-empty-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.automation-empty h3 {
+  margin: 0 0 8px;
+  color: #344054;
+}
+
+.automation-empty p {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+/* =========================================================
+   SCRIPT MODAL
+   ========================================================= */
+
+.automation-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(16, 24, 40, 0.65);
+}
+
+.automation-modal {
+  width: min(1000px, 95vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.automation-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #eaecf0;
+}
+
+.automation-modal-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 20px;
+}
+
+.automation-modal-header p {
+  margin: 5px 0 0;
+  color: #667085;
+  font-size: 13px;
+}
+
+.automation-close-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: #f2f4f7;
+  color: #344054;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.automation-code {
+  flex: 1;
+  overflow: auto;
+  margin: 0;
+  padding: 22px;
+  background: #101828;
+  color: #e4e7ec;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.automation-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid #eaecf0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .automation-page {
+    padding: 20px;
+  }
+
+  .automation-header {
+    flex-direction: column;
+  }
+
+  .automation-stats {
+    width: 100%;
+  }
+
+  .automation-stat-card {
+    flex: 1;
+  }
+
+  .automation-project-folders {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .automation-page {
+    padding: 14px;
+  }
+
+  .automation-header h1 {
+    font-size: 24px;
+  }
+
+  .automation-stats {
+    flex-direction: column;
+  }
+
+  .automation-folder-view-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .automation-card-top {
+    flex-direction: column;
+  }
+
+  .automation-card-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .automation-not-generated {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .automation-modal-overlay {
+    padding: 10px;
+  }
+
+  .automation-modal-actions {
+    flex-wrap: wrap;
+  }
+}

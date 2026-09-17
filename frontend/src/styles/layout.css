@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: #f5f7fb;
+    font-family: Inter, sans-serif;
+}
+
+.app-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.main-layout {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-left: 270px;
+}
+
+.page-content {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #f5f7fb;
+}
+
+/* =====================================================
+   Premium Dark Theme - Layout
+   ===================================================== */
+
+.dark-theme {
+    background: #0f172a;
+    color: #f1f5f9;
+}
+
+.dark-theme .main-layout {
+    background: #0f172a;
+}
+
+.dark-theme .page-content {
+    background: #0f172a;
+}

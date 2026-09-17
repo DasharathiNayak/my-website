@@ -1,0 +1,260 @@
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 270px;
+    height: 100vh;
+
+    background: #0f172a;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 18px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    z-index: 1000;
+
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.sidebar-logo {
+    flex-shrink: 0;
+    margin-bottom: 28px;
+}
+
+.sidebar-logo h2 {
+    margin: 0 0 6px;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.sidebar-logo p {
+    margin: 0;
+
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.sidebar-menu {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    overflow-y: auto;
+
+    padding-right: 4px;
+}
+
+
+/* scrollbar */
+
+.sidebar-menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+
+/* =========================
+   MENU LINK
+========================= */
+
+.menu-link {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 48px;
+
+    padding: 12px 14px;
+
+    box-sizing: border-box;
+
+    text-decoration: none;
+
+    color: #cbd5e1;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+
+    flex-shrink: 0;
+}
+
+.menu-link svg {
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.menu-link:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.menu-link.active {
+    background: #2563eb;
+    color: white;
+
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.25);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.sidebar-footer {
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding-top: 16px;
+}
+
+
+/* =========================
+   FOOTER BUTTON
+========================= */
+
+.footer-btn {
+    width: 100%;
+
+    border: none;
+
+    min-height: 48px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+.footer-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Documentation */
+
+.documentation {
+    background: #1e293b;
+    color: white;
+}
+
+.documentation:hover {
+    background: #334155;
+}
+
+
+/* Upgrade */
+
+.upgrade {
+    background: #f59e0b;
+    color: #111827;
+}
+
+.upgrade:hover {
+    background: #fbbf24;
+}
+
+
+/* Logout */
+
+.logout {
+    background: #ef4444;
+    color: white;
+}
+
+.logout:hover {
+    background: #f87171;
+}
+
+/* =====================================================
+   Premium Dark Theme - Sidebar
+   ===================================================== */
+
+.dark-theme .sidebar {
+    background: #111827;
+    color: #f8fafc;
+    border-right: 1px solid #1e293b;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.22);
+}
+
+.dark-theme .sidebar-logo h2 {
+    color: #f8fafc;
+}
+
+.dark-theme .sidebar-logo p {
+    color: #94a3b8;
+}
+
+.dark-theme .menu-link {
+    color: #cbd5e1;
+}
+
+.dark-theme .menu-link:hover {
+    background: #1e293b;
+    color: #ffffff;
+}
+
+.dark-theme .menu-link.active {
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 5px 18px rgba(37, 99, 235, 0.28);
+}
+
+.dark-theme .documentation {
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+.dark-theme .documentation:hover {
+    background: #334155;
+}

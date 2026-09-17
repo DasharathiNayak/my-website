@@ -1,0 +1,71 @@
+.workspace-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:white;
+
+    padding:28px;
+
+    border-radius:18px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+}
+
+.workspace-left h1{
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+.workspace-left p{
+
+    color:#6b7280;
+
+    margin-bottom:15px;
+
+}
+
+.workspace-meta{
+
+    display:flex;
+
+    gap:18px;
+
+    flex-wrap:wrap;
+
+}
+
+.workspace-meta span{
+
+    background:#f3f4f6;
+
+    padding:8px 14px;
+
+    border-radius:25px;
+
+    font-size:14px;
+
+}
+
+.workspace-status{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+    padding:10px 18px;
+
+    border-radius:25px;
+
+    font-weight:600;
+
+}

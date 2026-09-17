@@ -1,0 +1,79 @@
+.ai-markdown {
+  width: 100%;
+}
+
+.ai-markdown p {
+  margin: 0 0 12px;
+}
+
+.ai-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.ai-markdown h1,
+.ai-markdown h2,
+.ai-markdown h3 {
+  margin: 0 0 12px;
+  color: #0f172a;
+}
+
+.ai-markdown strong {
+  color: #0f172a;
+}
+
+.ai-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px;
+  font-size: 13px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ai-markdown th,
+.ai-markdown td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ai-markdown th {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #334155;
+}
+
+.ai-markdown td {
+  color: #475569;
+}
+
+.ai-markdown tr:last-child td {
+  border-bottom: none;
+}
+
+.ai-markdown ul,
+.ai-markdown ol {
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+
+.ai-markdown li {
+  margin-bottom: 5px;
+}
+
+.ai-markdown code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  font-size: 12px;
+}
+
+.ai-markdown pre {
+  overflow-x: auto;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  margin: 12px 0;
+}
