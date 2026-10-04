@@ -1,24 +1,63 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+
 from app.database import Base, engine
 from app.routers.auth_router import router as auth_router
 from app.routers.project_router import router as project_router
 from app.routers.testcase_router import router as testcase_router
 from app.routers.bug_report_router import router as bug_report_router
+from app.routers.admin_router import router as admin_router
 
+
+# Create existing/new tables
 Base.metadata.create_all(bind=engine)
+
+
+# Run database migration
+def run_migrations():
+    with engine.begin() as connection:
+        connection.execute(
+            text(
+                "ALTER TABLE users "
+                "ADD COLUMN IF NOT EXISTS username VARCHAR(100)"
+            )
+        )
+
+        connection.execute(
+            text(
+                "ALTER TABLE users "
+                "ADD COLUMN IF NOT EXISTS role VARCHAR(50) DEFAULT 'Tester'"
+            )
+        )
+
+        connection.execute(
+            text(
+                "ALTER TABLE users "
+                "ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'Active'"
+            )
+        )
+
+        connection.execute(
+            text(
+                "ALTER TABLE users "
+                "ADD COLUMN IF NOT EXISTS auth_token VARCHAR(255)"
+            )
+        )
+
+
+run_migrations()
+
 
 app = FastAPI()
 
 
-
 app.include_router(testcase_router)
-
 app.include_router(project_router)
-
 app.include_router(auth_router)
-
 app.include_router(bug_report_router)
+app.include_router(admin_router)
+
 
 app.add_middleware(
     CORSMiddleware,

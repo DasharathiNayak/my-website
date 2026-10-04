@@ -29,10 +29,15 @@ function Login() {
       setMessage(response.data.message);
 
       if (response.data.message === "Login Successful") {
-        localStorage.setItem("user_id", response.data.user_id);
-        localStorage.setItem("user_name", response.data.fullname);
-        navigate("/dashboard");
-      }
+    localStorage.setItem("user_id", response.data.user_id);
+    localStorage.setItem("user_name", response.data.fullname);
+
+    localStorage.setItem("user_role", response.data.role || "Tester");
+    localStorage.setItem("user_status", response.data.status || "Active");
+    localStorage.setItem("auth_token", response.data.auth_token || "");
+
+    navigate("/dashboard");
+}
     } catch (err) {
       setMessage("Invalid Email or Password");
     }

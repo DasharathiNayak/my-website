@@ -9,7 +9,17 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    fullname = Column(String(100), nullable=False)
+    fullname = Column(
+        String(100),
+        nullable=False
+    )
+
+    username = Column(
+        String(100),
+        unique=True,
+        index=True,
+        nullable=True
+    )
 
     email = Column(
         String(255),
@@ -23,6 +33,25 @@ class User(Base):
         nullable=False
     )
 
+    role = Column(
+        String(50),
+        default="Tester",
+        nullable=False
+    )
+
+    status = Column(
+        String(50),
+        default="Active",
+        nullable=False
+    )
+
+    auth_token = Column(
+        String(255),
+        unique=True,
+        index=True,
+        nullable=True
+    )
+
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
@@ -33,7 +62,6 @@ class User(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
-
 
 class Project(Base):
     __tablename__ = "projects"

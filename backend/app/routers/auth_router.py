@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 import random
+import secrets
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
@@ -120,10 +121,14 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 
         # Create new user
         new_user = User(
-            fullname=user.fullname,
-            email=user.email,
-            password=hash_password(user.password)
-        )
+    fullname=user.fullname,
+    username=user.email.split("@")[0],
+    email=user.email,
+    password=hash_password(user.password),
+    role="Tester",
+    status="Active",
+    auth_token=secrets.token_urlsafe(32)
+)
 
         db.add(new_user)
         db.commit()
@@ -169,12 +174,27 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             status_code=401,
             detail="Invalid Email or Password"
         )
+        
+    if db_user.status == "Suspended":
+        raise HTTPException(
+            status_code=403,
+            detail="Your account has been suspended"
+    )
+
+    if not db_user.auth_token:
+        db_user.auth_token = secrets.token_urlsafe(32)
+        db.commit()
+        db.refresh(db_user)
 
     return {
     "message": "Login Successful",
     "user_id": db_user.id,
     "fullname": db_user.fullname,
-    "email": db_user.email
+    "email": db_user.email,
+    "username": db_user.username,
+    "role": db_user.role,
+    "status": db_user.status,
+    "auth_token": db_user.auth_token
 }
     
 @router.get("/users/{user_id}")
