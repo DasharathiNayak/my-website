@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 import random
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
@@ -47,6 +48,60 @@ TestCraftAI Team
         server.send_message(msg)
 
 router = APIRouter(tags=["Authentication"])
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
+@router.post("/users/{user_id}/change-password")
+def change_password(
+    user_id: int,
+    request: ChangePasswordRequest,
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(
+        User.id == user_id
+    ).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    if not verify_password(
+        request.current_password,
+        user.password
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Current password is incorrect"
+        )
+
+    if len(request.new_password) < 8:
+        raise HTTPException(
+            status_code=400,
+            detail="New password must be at least 8 characters"
+        )
+
+    if verify_password(
+        request.new_password,
+        user.password
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="New password must be different from current password"
+        )
+
+    user.password = hash_password(
+        request.new_password
+    )
+
+    db.commit()
+
+    return {
+        "message": "Password changed successfully"
+    }
 
 
 @router.post("/signup")
@@ -116,10 +171,11 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         )
 
     return {
-        "message": "Login Successful",
-        "user_id": db_user.id,
-        "email": db_user.email
-    }
+    "message": "Login Successful",
+    "user_id": db_user.id,
+    "fullname": db_user.fullname,
+    "email": db_user.email
+}
     
 @router.get("/users/{user_id}")
 def get_user_profile(
@@ -142,26 +198,7 @@ def get_user_profile(
         "email": user.email
     }
     
-@router.get("/users/{user_id}")
-def get_user_profile(
-    user_id: int,
-    db: Session = Depends(get_db)
-):
-    user = db.query(User).filter(
-        User.id == user_id
-    ).first()
 
-    if not user:
-        raise HTTPException(
-            status_code=404,
-            detail="User not found"
-        )
-
-    return {
-        "user_id": user.id,
-        "fullname": user.fullname,
-        "email": user.email
-    }
 @router.get("/users")
 def get_all_users(
     db: Session = Depends(get_db)
