@@ -30,6 +30,7 @@ function Login() {
 
       if (response.data.message === "Login Successful") {
         localStorage.setItem("user_id", response.data.user_id);
+        localStorage.setItem("user_name", response.data.fullname);
         navigate("/dashboard");
       }
     } catch (err) {

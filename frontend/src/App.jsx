@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -10,15 +10,52 @@ import AutomationScripts from "./pages/AutomationScripts";
 import Analytics from "./pages/Analytics";
 import AIAssistant from "./pages/AIAssistant";
 import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";
 import AdminPanel from "./pages/AdminPanel";
 import ProjectWorkspace from "./pages/ProjectWorkspace";
 
 import Layout from "./components/Layout";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Keep App/Layout in sync when the theme is changed from Settings.
+  useEffect(() => {
+  const applyTheme = (theme) => {
+    const isDark = theme === "dark";
+
+    setDarkMode(isDark);
+    localStorage.setItem("theme", theme);
+
+    document.body.classList.toggle(
+      "dark-theme",
+      isDark
+    );
+  };
+
+  const savedTheme =
+    localStorage.getItem("theme") || "light";
+
+  applyTheme(savedTheme);
+
+  const handleThemeChange = (event) => {
+    applyTheme(
+      event.detail?.theme || "light"
+    );
+  };
+
+  window.addEventListener(
+    "testcraftai-theme-change",
+    handleThemeChange
   );
+
+  return () => {
+    window.removeEventListener(
+      "testcraftai-theme-change",
+      handleThemeChange
+    );
+  };
+}, []);
 
   return (
     <Routes>
@@ -55,10 +92,7 @@ function App() {
         }
       />
 
-      {/* Project Workspace
-          ProjectWorkspace already contains Layout,
-          so don't wrap it with Layout again.
-      */}
+      {/* Project Workspace */}
       <Route
         path="/project/:id"
         element={<ProjectWorkspace />}
@@ -105,7 +139,10 @@ function App() {
       <Route
         path="/project/:id/bug-reports"
         element={
-          <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
+          <Layout
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+          >
             <BugReports />
           </Layout>
         }
@@ -159,6 +196,19 @@ function App() {
             setDarkMode={setDarkMode}
           >
             <Settings />
+          </Layout>
+        }
+      />
+
+      {/* Notifications */}
+      <Route
+        path="/notifications"
+        element={
+          <Layout
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+          >
+            <Notifications />
           </Layout>
         }
       />

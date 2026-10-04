@@ -2,37 +2,13 @@
     height:75px;
     background:white;
     display:flex;
-    justify-content:space-between;
+    justify-content:flex-end;
     align-items:center;
     padding:0 30px;
     border-bottom:1px solid #e5e7eb;
     position:sticky;
     top:0;
     z-index:99;
-}
-
-.navbar-search{
-    width:560px;
-    height:48px;
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    padding:0 16px;
-    gap:12px;
-}
-
-.navbar-search input{
-    border:none;
-    background:none;
-    outline:none;
-    width:100%;
-    font-size:15px;
-}
-
-.search-icon{
-    color:#64748b;
 }
 
 .navbar-right{
@@ -77,31 +53,10 @@
     color:#64748b;
 }
 
-/* =====================================================
-   Premium Dark Theme - Navbar
-   ===================================================== */
-
 .dark-theme .navbar {
     background: #111827;
     border-bottom: 1px solid #1e293b;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-}
-
-.dark-theme .navbar-search {
-    background: #172033;
-    border-color: #334155;
-}
-
-.dark-theme .navbar-search input {
-    color: #f1f5f9;
-}
-
-.dark-theme .navbar-search input::placeholder {
-    color: #64748b;
-}
-
-.dark-theme .search-icon {
-    color: #94a3b8;
 }
 
 .dark-theme .icon-btn {
@@ -120,4 +75,71 @@
 
 .dark-theme .profile span {
     color: #94a3b8;
+}
+
+/* ================================
+   Notification Bell
+================================ */
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ef4444;
+  color: #ffffff;
+
+  border: 2px solid #111827;
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+
+  pointer-events: none;
+  animation: notificationBadgePop 0.25s ease-out;
+}
+
+.notification-btn:hover .notification-badge {
+  transform: scale(1.08);
+}
+
+@keyframes notificationBadgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  70% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Light theme */
+body:not(.dark-theme) .notification-badge {
+  border-color: #ffffff;
+}
+
+/* Dark theme */
+body.dark-theme .notification-badge {
+  border-color: #111827;
 }

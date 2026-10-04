@@ -1,9 +1,28 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { addNotification } from "../services/notifications";
 import "../styles/settings.css";
 
 export default function Settings() {
   const [activeSection, setActiveSection] = useState("profile");
+
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
+  const [responseStyle, setResponseStyle] = useState(() => {
+    return localStorage.getItem("testcraftai_response_style") || "balanced";
+  });
+
+  const [savedTheme, setSavedTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
+  const isDarkTheme =
+    savedTheme === "dark" ||
+    (savedTheme === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   const [profile, setProfile] = useState({
     fullname: "",
@@ -18,6 +37,58 @@ export default function Settings() {
 
   const [loading, setLoading] = useState(true);
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const applyTheme = (selectedTheme) => {
+    const shouldBeDark =
+      selectedTheme === "dark" ||
+      (selectedTheme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    document.documentElement.classList.toggle("dark-theme", shouldBeDark);
+    document.body.classList.toggle("dark-theme", shouldBeDark);
+    document.documentElement.dataset.theme = selectedTheme;
+    document.body.dataset.theme = selectedTheme;
+  };
+
+  useEffect(() => {
+    applyTheme(savedTheme);
+  }, [savedTheme]);
+
+  useEffect(() => {
+    const handleExternalThemeChange = (event) => {
+      const nextTheme =
+        event.detail?.theme || localStorage.getItem("theme") || "light";
+      setTheme(nextTheme);
+      setSavedTheme(nextTheme);
+    };
+
+    window.addEventListener("testcraftai-theme-change", handleExternalThemeChange);
+
+    return () => {
+      window.removeEventListener("testcraftai-theme-change", handleExternalThemeChange);
+    };
+  }, []);
+
+  const handleThemeSave = () => {
+    localStorage.setItem("theme", theme);
+    setSavedTheme(theme);
+    applyTheme(theme);
+
+    window.dispatchEvent(
+      new CustomEvent("testcraftai-theme-change", {
+        detail: { theme },
+      })
+    );
+  };
+
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
 
@@ -30,10 +101,17 @@ export default function Settings() {
       try {
         const response = await api.get(`/users/${userId}`);
 
+        const currentFullname = response.data.fullname || "";
+
         setProfile({
-          fullname: response.data.fullname || "",
+          fullname: currentFullname,
           email: response.data.email || "",
         });
+
+        if (currentFullname) {
+          localStorage.setItem("user_name", currentFullname);
+          localStorage.setItem("user_fullname", currentFullname);
+        }
       } catch (error) {
         console.error("Failed to load profile:", error);
       } finally {
@@ -85,10 +163,11 @@ export default function Settings() {
 
   return (
     <div
+      className="settings-page"
       style={{
         minHeight: "calc(100vh - 70px)",
         padding: "32px",
-        background: "#f5f7fb",
+        background: isDarkTheme ? "#0b1220" : "#f5f7fb",
       }}
     >
       {/* Page Header */}
@@ -98,7 +177,7 @@ export default function Settings() {
             margin: 0,
             fontSize: "30px",
             fontWeight: 700,
-            color: "#0f172a",
+            color: isDarkTheme ? "#f8fafc" : "#0f172a",
           }}
         >
           Settings
@@ -107,7 +186,7 @@ export default function Settings() {
         <p
           style={{
             margin: "8px 0 0",
-            color: "#64748b",
+            color: isDarkTheme ? "#94a3b8" : "#64748b",
             fontSize: "15px",
           }}
         >
@@ -117,6 +196,7 @@ export default function Settings() {
 
       {/* Settings Layout */}
       <div
+        className="settings-layout"
         style={{
           maxWidth: "1100px",
           margin: "0 auto",
@@ -128,9 +208,10 @@ export default function Settings() {
       >
         {/* Sidebar */}
         <div
+          className="settings-sidebar"
           style={{
-            background: "#ffffff",
-            border: "1px solid #e2e8f0",
+            background: isDarkTheme ? "#111b2e" : "#ffffff",
+            border: `1px solid ${isDarkTheme ? "#263957" : "#e2e8f0"}`,
             borderRadius: "14px",
             padding: "8px",
           }}
@@ -140,14 +221,21 @@ export default function Settings() {
 
             return (
               <button
+                className={`settings-nav-item ${active ? "active" : ""}`}
                 key={section.id}
                 type="button"
                 onClick={() => setActiveSection(section.id)}
                 style={{
                   width: "100%",
                   border: "none",
-                  background: active ? "#eef2ff" : "transparent",
+                  background: active
+                    ? isDarkTheme
+                      ? "#1b2a44"
+                      : "#eef2ff"
+                    : "transparent",
                   borderRadius: "10px",
+                  outline: "none",
+                  boxShadow: "none",
                   padding: "12px",
                   display: "flex",
                   alignItems: "center",
@@ -162,7 +250,13 @@ export default function Settings() {
                     width: "34px",
                     height: "34px",
                     borderRadius: "9px",
-                    background: active ? "#ffffff" : "#f8fafc",
+                    background: isDarkTheme
+                      ? active
+                        ? "#243653"
+                        : "#18253a"
+                      : active
+                        ? "#ffffff"
+                        : "#f8fafc",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -178,7 +272,13 @@ export default function Settings() {
                       display: "block",
                       fontSize: "14px",
                       fontWeight: active ? 700 : 600,
-                      color: active ? "#4338ca" : "#334155",
+                      color: active
+                        ? isDarkTheme
+                          ? "#a5b4fc"
+                          : "#4338ca"
+                        : isDarkTheme
+                          ? "#e2e8f0"
+                          : "#334155",
                     }}
                   >
                     {section.label}
@@ -189,7 +289,7 @@ export default function Settings() {
                       display: "block",
                       marginTop: "2px",
                       fontSize: "11px",
-                      color: "#94a3b8",
+                      color: isDarkTheme ? "#94a3b8" : "#64748b",
                     }}
                   >
                     {section.description}
@@ -202,9 +302,10 @@ export default function Settings() {
 
         {/* Content */}
         <div
+          className="settings-content-card"
           style={{
-            background: "#ffffff",
-            border: "1px solid #e2e8f0",
+            background: isDarkTheme ? "#111b2e" : "#ffffff",
+            border: `1px solid ${isDarkTheme ? "#263957" : "#e2e8f0"}`,
             borderRadius: "14px",
             padding: "26px",
             minHeight: "500px",
@@ -236,7 +337,7 @@ export default function Settings() {
                   Edit Profile
                 </button>
               </div>
-              <p style={{ color: "#64748b" }}>
+              <p style={{ color: isDarkTheme ? "#a8b5c8" : "#64748b" }}>
                 Manage your personal information and account details.
               </p>
 
@@ -272,7 +373,7 @@ export default function Settings() {
           {activeSection === "appearance" && (
             <>
               <h2>Appearance</h2>
-              <p style={{ color: "#64748b" }}>
+              <p style={{ color: isDarkTheme ? "#a8b5c8" : "#64748b" }}>
                 Customize the appearance of TestCraftAI.
               </p>
 
@@ -282,16 +383,31 @@ export default function Settings() {
                   <p style={smallText}>Choose your preferred interface theme.</p>
                 </div>
 
-                <select style={selectStyle} defaultValue="light">
+                <select
+                  className="settings-theme-select"
+                  style={selectStyle}
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                >
                   <option value="light">Light</option>
                   <option value="dark">Dark</option>
                   <option value="system">System Default</option>
                 </select>
               </div>
+
+              <button
+                type="button"
+                className="settings-primary-btn"
+                onClick={handleThemeSave}
+              >
+                Save Theme
+              </button>
             </>
           )}
+          {activeSection === "profile" && (
           <button
             type="button"
+            className="settings-primary-btn"
             onClick={async () => {
               const userId = localStorage.getItem("user_id");
 
@@ -335,6 +451,9 @@ export default function Settings() {
                   email: response.data.email,
                 });
 
+                localStorage.setItem("user_name", response.data.fullname || "User");
+                localStorage.setItem("user_fullname", response.data.fullname || "User");
+
                 setEditingProfile(false);
 
                 alert("Profile updated successfully");
@@ -361,6 +480,7 @@ export default function Settings() {
           >
             {savingProfile ? "Saving..." : "Save Changes"}
           </button>
+          )}
           {showOtpModal && (
             <div
               style={{
@@ -462,6 +582,11 @@ export default function Settings() {
                           email: response.data.email,
                         }));
 
+                        if (profile.fullname) {
+                          localStorage.setItem("user_name", profile.fullname);
+                          localStorage.setItem("user_fullname", profile.fullname);
+                        }
+
                         setShowOtpModal(false);
                         setOtp("");
                         setPendingEmail("");
@@ -500,7 +625,7 @@ export default function Settings() {
           {activeSection === "notifications" && (
             <>
               <h2>Notifications</h2>
-              <p style={{ color: "#64748b" }}>
+              <p style={{ color: isDarkTheme ? "#a8b5c8" : "#64748b" }}>
                 Manage how you receive TestCraftAI notifications.
               </p>
 
@@ -531,7 +656,7 @@ export default function Settings() {
           {activeSection === "ai" && (
             <>
               <h2>AI Preferences</h2>
-              <p style={{ color: "#64748b" }}>
+              <p style={{ color: isDarkTheme ? "#a8b5c8" : "#64748b" }}>
                 Configure your AI Assistant preferences.
               </p>
 
@@ -543,7 +668,24 @@ export default function Settings() {
                   </p>
                 </div>
 
-                <select style={selectStyle} defaultValue="balanced">
+                <select
+                  className="settings-response-style-select"
+                  style={{
+                    ...selectStyle,
+                    background: savedTheme === "dark" ? "#101c30" : "#ffffff",
+                    color: savedTheme === "dark" ? "#f8fafc" : "#334155",
+                    borderColor: savedTheme === "dark" ? "#29415f" : "#dbe3ef",
+                  }}
+                  value={responseStyle}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setResponseStyle(value);
+                    localStorage.setItem(
+                      "testcraftai_response_style",
+                      value
+                    );
+                  }}
+                >
                   <option value="concise">Concise</option>
                   <option value="balanced">Balanced</option>
                   <option value="detailed">Detailed</option>
@@ -555,7 +697,7 @@ export default function Settings() {
           {activeSection === "security" && (
             <>
               <h2>Security</h2>
-              <p style={{ color: "#64748b" }}>
+              <p style={{ color: isDarkTheme ? "#a8b5c8" : "#64748b" }}>
                 Manage your account security settings.
               </p>
 
@@ -567,17 +709,188 @@ export default function Settings() {
                   </p>
                 </div>
 
-                <button style={secondaryButtonStyle}>
+                <button
+                  type="button"
+                  style={secondaryButtonStyle}
+                  onClick={() => setShowPasswordModal(true)}
+                >
                   Change Password
                 </button>
               </div>
             </>
           )}
 
+          {showPasswordModal && (
+            <div style={passwordModalOverlayStyle}>
+              <div style={passwordModalStyle}>
+                <div style={passwordModalHeaderStyle}>
+                  <div>
+                    <h3 style={{ margin: 0, color: "#f8fafc" }}>Change Password</h3>
+                    <p style={{ margin: "6px 0 0", color: "#94a3b8", fontSize: "13px" }}>
+                      Update your TestCraftAI account password.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswordModal(false)}
+                    style={passwordCloseButtonStyle}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div style={passwordFieldWrapStyle}>
+                  <label style={passwordLabelStyle}>Current Password</label>
+                  <div style={passwordInputWrapStyle}>
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Enter current password"
+                      style={passwordInputStyle}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      style={passwordEyeButtonStyle}
+                    >
+                      {showCurrentPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={passwordFieldWrapStyle}>
+                  <label style={passwordLabelStyle}>New Password</label>
+                  <div style={passwordInputWrapStyle}>
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      style={passwordInputStyle}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      style={passwordEyeButtonStyle}
+                    >
+                      {showNewPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={passwordFieldWrapStyle}>
+                  <label style={passwordLabelStyle}>Confirm New Password</label>
+                  <div style={passwordInputWrapStyle}>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                      style={passwordInputStyle}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      style={passwordEyeButtonStyle}
+                    >
+                      {showConfirmPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <p style={passwordHintStyle}>
+                  Use at least 8 characters for your new password.
+                </p>
+
+                <div style={passwordActionsStyle}>
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswordModal(false)}
+                    style={passwordCancelButtonStyle}
+                    disabled={passwordLoading}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    disabled={passwordLoading}
+                    style={passwordSaveButtonStyle}
+                    onClick={async () => {
+                      if (!currentPassword || !newPassword || !confirmPassword) {
+                        alert("Please fill all password fields.");
+                        return;
+                      }
+
+                      if (newPassword.length < 8) {
+                        alert("New password must be at least 8 characters.");
+                        return;
+                      }
+
+                      if (newPassword !== confirmPassword) {
+                        alert("New password and confirm password do not match.");
+                        return;
+                      }
+
+                      if (currentPassword === newPassword) {
+                        alert("New password must be different from your current password.");
+                        return;
+                      }
+
+                      const userId = localStorage.getItem("user_id");
+
+                      if (!userId) {
+                        alert("User session not found. Please login again.");
+                        return;
+                      }
+
+                      try {
+                        setPasswordLoading(true);
+
+                        await api.post(`/users/${userId}/change-password`, {
+                          current_password: currentPassword,
+                          new_password: newPassword,
+                        });
+
+                        addNotification({
+                          title: "Password Changed",
+                          message: "changed the account password successfully.",
+                          type: "system",
+                          icon: "🔐",
+                        });
+
+                        alert("Password changed successfully.");
+
+                        setCurrentPassword("");
+                        setNewPassword("");
+                        setConfirmPassword("");
+                        setShowPasswordModal(false);
+                      } catch (error) {
+                        alert(
+                          error.response?.data?.detail ||
+                          "Failed to change password. Please try again."
+                        );
+                      } finally {
+                        setPasswordLoading(false);
+                      }
+                    }}
+                  >
+                    {passwordLoading ? "Changing..." : "Change Password"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeSection === "about" && (
             <>
               <h2>About TestCraftAI</h2>
-              <p style={{ color: "#64748b" }}>
+              <p
+                style={{
+                  color: isDarkTheme ? "#a8b5c8" : "#64748b",
+                  lineHeight: 1.7,
+                }}
+              >
                 TestCraftAI is an AI-powered software testing platform for
                 generating test cases, bug reports, automation scripts and
                 testing analytics.
@@ -587,13 +900,18 @@ export default function Settings() {
                 style={{
                   marginTop: "24px",
                   padding: "18px",
-                  background: "#f8fafc",
+                  background: isDarkTheme ? "#18253a" : "#f8fafc",
                   borderRadius: "10px",
-                  border: "1px solid #e2e8f0",
+                  border: `1px solid ${isDarkTheme ? "#2b4161" : "#e2e8f0"}`,
                 }}
               >
-                <strong>Version</strong>
-                <div style={{ marginTop: "5px", color: "#64748b" }}>
+                <strong style={{ color: isDarkTheme ? "#f1f5f9" : "#0f172a" }}>Version</strong>
+                <div
+                  style={{
+                    marginTop: "5px",
+                    color: isDarkTheme ? "#a8b5c8" : "#64748b",
+                  }}
+                >
                   TestCraftAI v1.0.0
                 </div>
               </div>
@@ -639,6 +957,7 @@ const selectStyle = {
   border: "1px solid #dbe3ef",
   borderRadius: "8px",
   background: "#ffffff",
+  color: "#334155",
   fontSize: "13px",
 };
 
@@ -649,5 +968,117 @@ const secondaryButtonStyle = {
   background: "#ffffff",
   color: "#334155",
   fontWeight: 600,
+  cursor: "pointer",
+};
+
+const passwordModalOverlayStyle = {
+  position: "fixed",
+  inset: 0,
+  zIndex: 9999,
+  background: "rgba(2, 6, 23, 0.72)",
+  backdropFilter: "blur(7px)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "20px",
+};
+
+const passwordModalStyle = {
+  width: "100%",
+  maxWidth: "500px",
+  background: "#0f1a2d",
+  border: "1px solid #29415f",
+  borderRadius: "18px",
+  padding: "24px",
+  boxShadow: "0 25px 70px rgba(0,0,0,0.45)",
+};
+
+const passwordModalHeaderStyle = {
+  display: "flex",
+  alignItems: "flex-start",
+  justifyContent: "space-between",
+  gap: "15px",
+  marginBottom: "22px",
+};
+
+const passwordCloseButtonStyle = {
+  width: "34px",
+  height: "34px",
+  border: "1px solid #29415f",
+  borderRadius: "9px",
+  background: "#142238",
+  color: "#cbd5e1",
+  fontSize: "22px",
+  cursor: "pointer",
+};
+
+const passwordFieldWrapStyle = {
+  marginBottom: "16px",
+};
+
+const passwordLabelStyle = {
+  display: "block",
+  marginBottom: "7px",
+  color: "#dbeafe",
+  fontSize: "13px",
+  fontWeight: 600,
+};
+
+const passwordInputWrapStyle = {
+  position: "relative",
+};
+
+const passwordInputStyle = {
+  width: "100%",
+  boxSizing: "border-box",
+  padding: "12px 45px 12px 13px",
+  border: "1px solid #29415f",
+  borderRadius: "10px",
+  outline: "none",
+  background: "#0b1424",
+  color: "#f8fafc",
+  fontSize: "14px",
+};
+
+const passwordEyeButtonStyle = {
+  position: "absolute",
+  right: "7px",
+  top: "50%",
+  transform: "translateY(-50%)",
+  border: "none",
+  background: "transparent",
+  cursor: "pointer",
+  fontSize: "16px",
+};
+
+const passwordHintStyle = {
+  margin: "4px 0 20px",
+  color: "#94a3b8",
+  fontSize: "12px",
+};
+
+const passwordActionsStyle = {
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "10px",
+};
+
+const passwordCancelButtonStyle = {
+  padding: "10px 16px",
+  border: "1px solid #29415f",
+  borderRadius: "9px",
+  background: "transparent",
+  color: "#cbd5e1",
+  fontWeight: 600,
+  cursor: "pointer",
+};
+
+const passwordSaveButtonStyle = {
+  padding: "10px 17px",
+  border: "none",
+  borderRadius: "9px",
+  background: "#2563eb",
+  color: "#ffffff",
+  fontWeight: 700,
   cursor: "pointer",
 };

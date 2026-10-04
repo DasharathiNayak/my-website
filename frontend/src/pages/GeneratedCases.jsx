@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styles/generatedCases.css";
 import * as dashboardService from "../services/dashboardService";
 import BugReportModal from "../components/modals/BugReportModal";
+import { addNotification } from "../services/notifications";
 
 export default function GeneratedCases() {
     const { id } = useParams();
@@ -206,6 +207,13 @@ export default function GeneratedCases() {
                 editData
             );
 
+            addNotification({
+    title: "Test Case Updated",
+    message: `"${editData.title || "Test Case"}" was updated successfully.`,
+    type: "system",
+    icon: "✏️",
+});
+
             setEditingId(null);
             setEditData({});
 
@@ -228,8 +236,20 @@ export default function GeneratedCases() {
         if (!confirmed) return;
 
         try {
-            await dashboardService.deleteTestCase(testCaseId);
-            await loadTestCases(selectedProject.id);
+            const deletedTestCase = testCases.find(
+    (item) => item.id === testCaseId
+);
+
+await dashboardService.deleteTestCase(testCaseId);
+
+addNotification({
+    title: "Test Case Deleted",
+    message: `"${deletedTestCase?.title || "Test Case"}" was deleted successfully.`,
+    type: "system",
+    icon: "🗑️",
+});
+
+await loadTestCases(selectedProject.id);
         } catch (err) {
             console.error("Delete test case error:", err);
 

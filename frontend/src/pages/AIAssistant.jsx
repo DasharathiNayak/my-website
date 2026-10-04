@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as dashboardService from "../services/dashboardService";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import "../styles/AIAssistant.css";
+import "../styles/aiAssistant.css";
 
 export default function AIAssistant() {
   const [question, setQuestion] = useState("");
@@ -79,7 +79,7 @@ export default function AIAssistant() {
   };
 
   return (
-    <div
+    <div className="ai-assistant-page"
       style={{
         minHeight: "calc(100vh - 70px)",
         padding: "32px",
@@ -206,10 +206,10 @@ export default function AIAssistant() {
         {/* Messages */}
         <div
           style={{
-            minHeight: "280px",
-            maxHeight: "420px",
+            minHeight: "420px",
+            maxHeight: "520px",
             overflowY: "auto",
-            padding: "18px 20px"
+            padding: "24px"
           }}
         >
           {messages.map((message, index) => (
@@ -267,11 +267,9 @@ export default function AIAssistant() {
                     whiteSpace: "pre-wrap"
                   }}
                 >
-                  <div className="ai-markdown">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {message.text}
-                    </ReactMarkdown>
-                  </div>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {message.text}
+                  </ReactMarkdown>
                 </div>
               </div>
             </div>
@@ -296,9 +294,7 @@ export default function AIAssistant() {
         {/* Suggested Questions */}
         <div
           style={{
-            padding: "0 20px 16px",
-            width: "100%",
-            boxSizing: "border-box"
+            padding: "0 24px 18px"
           }}
         >
           <div

@@ -259,7 +259,14 @@ export default function Projects() {
                             <button
                                 className="delete-confirm-btn"
                                 onClick={async () => {
-                                    const success = await deleteProject(deleteProjectId);
+                                    const projectToDelete = projects.find(
+                                        (project) => project.id === deleteProjectId
+                                    );
+
+                                    const success = await deleteProject(
+                                        deleteProjectId,
+                                        projectToDelete?.project_name || "Unknown Project"
+                                    );
 
                                     if (success) {
                                         setDeleteProjectId(null);

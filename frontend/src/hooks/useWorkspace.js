@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as dashboardService from "../services/dashboardService";
-
+import { addNotification } from "../services/notifications";
 export default function useWorkspace(projectId) {
 
     // =====================================================
@@ -350,12 +350,17 @@ export default function useWorkspace(projectId) {
             setTestCases(updatedTestCases);
 
             if (newTestCases > 0) {
+    toast.success(
+        `${newTestCases} new test case(s) generated successfully`
+    );
 
-                toast.success(
-                    `${newTestCases} new test case(s) generated successfully`
-                );
-
-            } else {
+    addNotification({
+        title: "Test Cases Generated",
+        message: `${newTestCases} new test case(s) were generated successfully.`,
+        type: "ai",
+        icon: "🤖",
+    });
+} else {
 
                 toast.info(
                     "No new test cases generated. Existing test cases already cover this requirement."

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as dashboardService from "../services/dashboardService";
+import { addNotification } from "../services/notifications";
+import api from "../services/api";
 
 export default function useProjects() {
 
@@ -210,33 +212,69 @@ export default function useProjects() {
         }
     };
 
-    const deleteProject = async (projectId) => {
-        try {
-            const response = await dashboardService.deleteProject(projectId);
+    const deleteProject = async (projectId, projectName) => {
+    try {
+        const response =
+            await dashboardService.deleteProject(projectId);
 
-            if (response.status >= 200 && response.status < 300) {
-                toast.success(
-                    response.data?.message ||
-                    "Project deleted successfully"
-                );
+        if (response.status >= 200 && response.status < 300) {
 
-                await loadProjects();
-                return true;
-            }
-
-            return false;
-        } catch (err) {
-            console.error("DELETE PROJECT ERROR:", err);
-
-            toast.error(
-                err.response?.data?.detail ||
-                err.message ||
-                "Project deletion failed"
+            toast.success(
+                response.data?.message ||
+                "Project deleted successfully"
             );
 
-            return false;
+            // Get current user's latest name from backend
+            let currentUserName = "User";
+
+            try {
+                const userId =
+                    localStorage.getItem("user_id");
+
+                if (userId) {
+                    const userResponse =
+                        await api.get(`/users/${userId}`);
+
+                    currentUserName =
+                        userResponse.data?.fullname ||
+                        "User";
+                }
+            } catch (userError) {
+                console.error(
+                    "Failed to fetch current user name:",
+                    userError
+                );
+            }
+
+            addNotification({
+                title: "Project Deleted",
+                message: `${currentUserName} deleted project "${projectName}". All related data was deleted successfully.`,
+                type: "system",
+                icon: "🗑️",
+            });
+
+            await loadProjects();
+
+            return true;
         }
-    };
+
+        return false;
+
+    } catch (err) {
+        console.error(
+            "DELETE PROJECT ERROR:",
+            err
+        );
+
+        toast.error(
+            err.response?.data?.detail ||
+            err.message ||
+            "Project deletion failed"
+        );
+
+        return false;
+    }
+};
 
     // ============================================================
     // INITIAL LOAD

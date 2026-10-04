@@ -1,79 +1,20 @@
-.ai-markdown {
-  width: 100%;
-}
-
-.ai-markdown p {
-  margin: 0 0 12px;
-}
-
-.ai-markdown p:last-child {
-  margin-bottom: 0;
-}
-
-.ai-markdown h1,
-.ai-markdown h2,
-.ai-markdown h3 {
-  margin: 0 0 12px;
-  color: #0f172a;
-}
-
-.ai-markdown strong {
-  color: #0f172a;
-}
-
-.ai-markdown table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0 16px;
-  font-size: 13px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.ai-markdown th,
-.ai-markdown td {
-  padding: 9px 12px;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.ai-markdown th {
-  background: #f1f5f9;
-  font-weight: 700;
-  color: #334155;
-}
-
-.ai-markdown td {
-  color: #475569;
-}
-
-.ai-markdown tr:last-child td {
-  border-bottom: none;
-}
-
-.ai-markdown ul,
-.ai-markdown ol {
-  margin: 8px 0 12px;
-  padding-left: 22px;
-}
-
-.ai-markdown li {
-  margin-bottom: 5px;
-}
-
-.ai-markdown code {
-  padding: 2px 5px;
-  border-radius: 4px;
-  background: #f1f5f9;
-  font-size: 12px;
-}
-
-.ai-markdown pre {
-  overflow-x: auto;
-  padding: 12px;
-  border-radius: 8px;
-  background: #f1f5f9;
-  margin: 12px 0;
-}
+/* AI Assistant dark mode */
+.dark-theme .ai-assistant-page { background:#080f1c !important; color:#e5e7eb !important; }
+.dark-theme .ai-assistant-page h1 { color:#f8fafc !important; }
+.dark-theme .ai-assistant-page p { color:#9fb0c8 !important; }
+.dark-theme .ai-assistant-page > div:first-of-type { color:#e5e7eb !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) { background:#101c30 !important; border-color:#263d5d !important; box-shadow:0 12px 35px rgba(0,0,0,.35) !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:first-child { border-color:#263d5d !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:first-child div { color:#f8fafc !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:first-child div div { color:#9fb0c8 !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:nth-child(2) { background:#0c1729 !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:nth-child(2) div[style*="background"] { background:#17253a !important; color:#e2e8f0 !important; border-color:#334155 !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:nth-child(2) div[style*="background: #2563eb"] { background:#2563eb !important; color:#fff !important; border-color:transparent !important; }
+.dark-theme .ai-assistant-page > div:nth-of-type(2) > div:nth-child(3) { background:#101c30 !important; }
+.dark-theme .ai-assistant-page button { background:#14233a !important; color:#dbeafe !important; border-color:#334155 !important; }
+.dark-theme .ai-assistant-page input { background:#0b1628 !important; color:#f8fafc !important; border-color:#334155 !important; }
+.dark-theme .ai-assistant-page input::placeholder { color:#7185a1 !important; }
+.dark-theme .ai-assistant-page form { background:#0d1829 !important; border-color:#263d5d !important; }
+.dark-theme .ai-assistant-page form button[type="submit"] { background:#2563eb !important; color:#fff !important; border-color:transparent !important; }
+.dark-theme .ai-assistant-page form button[type="submit"]:disabled { background:#475569 !important; }
+.dark-theme .ai-assistant-page hr { border-color:#334155 !important; }
